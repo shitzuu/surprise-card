@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Surprise 💖</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffd3e5, #e9d4ff, #fff0bb);
+    }
+
+    /* FIRST PAGE BALLOONS */
+    #balloons {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -120px;
+      width: 60px;
+      height: 75px;
+      border-radius: 50%;
+      animation: floatUp var(--speed) linear infinite;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) rotate(-8deg);
+      }
+
+      to {
+        transform: translateY(-125vh) rotate(8deg);
+      }
+    }
+
+    /* FIRST PAGE CARD */
+    .card {
+      position: relative;
+      z-index: 2;
+      width: 85%;
+      max-width: 720px;
+      margin: 25px 0;
+      padding: 35px 25px;
+      text-align: center;
+      background: white;
+      border-radius: 30px;
+      box-shadow: 0 15px 40px rgba(120, 45, 90, 0.25);
+    }
+
+    h1 {
+      color: #e74c8c;
+      font-size: clamp(35px, 7vw, 55px);
+      margin: 0 0 12px;
+    }
+
+    .intro {
+      color: #5c2042;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .first-page-photos {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 28px 0;
+    }
+
+    .first-photo {
+      width: 30%;
+      height: 175px;
+      object-fit: cover;
+      border: 6px solid white;
+      border-radius: 16px;
+      box-shadow: 0 7px 18px rgba(100, 30, 70, 0.25);
+    }
+
+    .first-photo:nth-child(1) {
+      transform: rotate(-5deg);
+    }
+
+    .first-photo:nth-child(2) {
+      transform: translateY(-8px) rotate(2deg);
+    }
+
+    .first-photo:nth-child(3) {
+      transform: rotate(5deg);
+    }
+
+    .countdown-box {
+      margin: 25px auto;
+      padding: 18px;
+      width: 150px;
+      border-radius: 20px;
+      background: #fff0f7;
+    }
+
+    #seconds {
+      display: block;
+      color: #ff4f9a;
+      font-size: 55px;
+      font-weight: bold;
+    }
+
+    .seconds-text {
+      color: #8e5573;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    button {
+      border: none;
+      border-radius: 30px;
+      padding: 15px 25px;
+      cursor: pointer;
+      color: white;
+      background: linear-gradient(90deg, #ff5f9e, #d84ccd);
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    /* SECOND PAGE */
+    #surprise {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      overflow-y: auto;
+      padding: 30px 20px 60px;
+      background: linear-gradient(135deg, #ff7eb3, #b764d8, #ffc75f);
+    }
+
+    #surprise.show {
+      display: block;
+    }
+
+    /* SECOND PAGE HEARTS */
+    #hearts {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -50px;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 30px;
+      animation: heartFloat var(--heartSpeed) linear infinite;
+    }
+
+    @keyframes heartFloat {
+      from {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 1;
+      }
+
+      to {
+        transform: translateY(-120vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .surprise-content {
+      position: relative;
+      z-index: 2;
+      max-width: 760px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .surprise-content h2 {
+      color: white;
+      font-size: clamp(48px, 10vw, 85px);
+      margin: 10px 0 25px;
+      text-shadow: 0 4px 12px rgba(90, 20, 80, 0.3);
+    }
+
+    .memory-photo {
+      display: block;
+      width: min(290px, 70vw);
+      height: 260px;
+      object-fit: cover;
+      border: 7px solid white;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(80, 20, 70, 0.35);
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .right-photo {
+      margin-left: auto;
+      transform: rotate(4deg);
+    }
+
+    .left-photo {
+      margin-right: auto;
+      transform: rotate(-4deg);
+    }
+
+    .message-box {
+      max-width: 560px;
+      margin: 20px auto;
+      padding: 18px 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.18);
+      text-align: center;
+    }
+
+    .message-box p {
+      color: white;
+      font-size: 18px;
+      line-height: 1.7;
+      margin: 14px 0;
+    }
+
+    @media (max-width: 600px) {
+      .first-photo {
+        height: 125px;
+        border-width: 4px;
+      }
+
+      .memory-photo {
+        height: 210px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="balloons"></div>
+
+  <!-- FIRST PAGE -->
+  <div class="card">
+    <h1>For My Boyfriend 💖</h1>
+
+    <p class="intro">
+      I have a little birthday surprise for you...
+    </p>
+
+    <div class="first-page-photos">
+      <img class="first-photo" src="photo1.jpeg">
+      <img class="first-photo" src="photo2.jpeg">
+      <img class="first-photo" src="photo3.jpeg">
+    </div>
+
+    <div class="countdown-box">
+      <span id="seconds">10</span>
+      <span class="seconds-text">SECONDS LEFT</span>
+    </div>
+
+    <button id="startButton" onclick="startCountdown()">
+      Start Countdown 💖
+    </button>
+  </div>
+
+  <!-- SECOND PAGE -->
+  <section id="surprise">
+    <div id="hearts"></div>
+
+    <div class="surprise-content">
+      <h2>Happy Birthday! 🎂</h2>
+
+      <img class="memory-photo right-photo" src="photo4.jpeg">
+
+      <div class="message-box">
+        <p>
+          Sooo... one more year older but unfortunately still the same
+          idiot I have to deal with! 😌
+        </p>
+
+        <p>
+          Jokes apart I genuinely hope this year brings you everything
+          you wish for happiness, success, peace, and a lot of reasons
+          to smile...ha ha IK me tr ahech tujhya life chi happpiness but 
+          apart from that I really wish ki bappa tula hamesha khush theu💗🧿        </p>
+      </div>
+
+      <img class="memory-photo left-photo" src="photo5.jpeg">
+
+      <div class="message-box">
+        <p>
+          I'm really grateful for all the moments, laughs, stupid
+          conversations, random arguments and all the little memories
+          we've made. Some of them are absolutely unforgettable...
+          and some are better left unmentioned. 🤭
+        </p>
+
+        <p>
+          You are genuinely special to me, and I hope you always know that.
+          AND! AND! AND! tula trass dene tr me kadich nai sodnar,so u better 
+          be ready and strong enough to handle this affat!
+          after all U Love me right?
+          Right na?😾   </p>
+      </div>
+
+      <img class="memory-photo right-photo" src="photo6.jpeg">
+
+      <div class="message-box">
+        <p>
+          Keep smiling, keep annoying me, and please don't become too
+          mature because I need someone to do bakchodi with. 💖
+          ani ha THANK YOU FOR EVERYTHING❤️‍🩹!
+          I LOVE YOU!👹💗
+        </p>
+
+        <p>
+          Have the best birthday ever💗<br>
+          <b>birthday boy 🎂</b>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const colors = ["#ff6d9d", "#8f73e6", "#ffd05b", "#64c9b2", "#ff8965"];
+    const balloonArea = document.getElementById("balloons");
+
+    for (let i = 0; i < 15; i++) {
+      const balloon = document.createElement("div");
+      balloon.className = "balloon";
+      balloon.style.left = Math.random() * 100 + "%";
+      balloon.style.background = colors[i % colors.length];
+      balloon.style.setProperty("--speed", 8 + Math.random() * 8 + "s");
+      balloon.style.animationDelay = -Math.random() * 12 + "s";
+      balloonArea.appendChild(balloon);
+    }
+
+    const heartArea = document.getElementById("hearts");
+
+    for (let i = 0; i < 30; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "♥";
+      heart.style.left = Math.random() * 100 + "%";
+      heart.style.fontSize = 20 + Math.random() * 30 + "px";
+      heart.style.setProperty("--heartSpeed", 6 + Math.random() * 7 + "s");
+      heart.style.animationDelay = -Math.random() * 10 + "s";
+      heartArea.appendChild(heart);
+    }
+
+    let time = 10;
+    let started = false;
+
+    function startCountdown() {
+      if (started) return;
+
+      started = true;
+      document.getElementById("startButton").innerHTML = "Counting down...";
+
+      const timer = setInterval(function () {
+        time--;
+        document.getElementById("seconds").innerHTML = time;
+
+        if (time <= 0) {
+          clearInterval(timer);
+          document.getElementById("surprise").classList.add("show");
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
